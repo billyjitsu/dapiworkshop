@@ -5,7 +5,7 @@ import "@api3/contracts/api3-server-v1/proxies/interfaces/IProxy.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 
-contract PriceFeed is Ownable {
+contract API3PriceFeed is Ownable {
 
     address public proxyAddress;
 

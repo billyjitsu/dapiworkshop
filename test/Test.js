@@ -77,7 +77,6 @@ describe("dAPI", function () {
 
     it("Reads from API3 Oracle through adapter", async function () {
         const { api3oracle, otherOracle, adaptor, mockDapi, owner } = await loadFixture(deployBefore);
-        // await adaptor.setDapiValues(mockDapi.getAddress());
         await otherOracle.updateOracleSource(adaptor.getAddress());
         let { roundId, answer, startedAt, timestamp, answeredInRound } = await otherOracle.getLatestAnswer();
         // console.log("Round ID: ", roundId);

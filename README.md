@@ -25,6 +25,7 @@ You also have the option to verify all deployed contracts after deployment with:
 ```
 npx hardhat ignition verify chain-11155111
 ```
+## Using API3 price oracle with other Oracle formats
 ### Deploy the other oracle smart contract
 You will need to deploy the `OtherOracle` contract using the other oracle setup.  We have it set to default the ETH/USD price feed on Sepolia
 
@@ -45,7 +46,7 @@ Once you have deployed your `Adaptor` contract, you will use that deployed contr
 Example:
 Deploy#Api3AggregatorAdaptor - 0xBf35d6060d828E573bf10cB0a30D2dab710D5075
 ```
-And input that address onto the `updateOracleSource` function of the `OtherOracle` contract.
+Input the deployed `Api3AggregatorAdaptor` address onto the `updateOracleSource` function of the `OtherOracle` contract.
 
 Once that is completed, your `OtherOracle` contract will be able to read API3 Price Feeds without a refactor
 
@@ -57,6 +58,16 @@ You can test the scenario locally with
 npx hardhat test
 ```
 It will take you through the mock tests and show you the flow of setting the adaptor as mentions above and the ability to look a the price feed data intregaton. 
+
+```
+it("Reads from API3 Oracle through adapter", async function () {
+        const { api3oracle, otherOracle, adaptor, mockDapi, owner } = await loadFixture(deployBefore);
+        await otherOracle.updateOracleSource(adaptor.getAddress());
+        let { roundId, answer, startedAt, timestamp, answeredInRound } = await otherOracle.getLatestAnswer();
+        console.log("Answer: ", answer.toString());
+        console.log("Answered in Round: ", answeredInRound.toString());
+    });
+```
 
 It will console out the original price feed data from the other oracle format and then console log the adjusted format need to be used by the other oracle contract
 ```
